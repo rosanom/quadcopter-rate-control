@@ -1,7 +1,10 @@
 #include "speed_control.h"
 #include "time_defines.h"
 #include "controller.h"
+#include "time.h"
 #include <fstream>
+
+using namespace std;
 
 SpeedControl::SpeedControl()
     : PeriodicTask("speed_control", SPEED_PERIOD, TIME_UNIT, SPEED_JITTER),
@@ -21,10 +24,12 @@ SpeedControl::SpeedControl()
 
 {
                         // Kp, Ki, Kd, saturation
-  m_roll_pid.set_all_params(0.1, 0.5, 0, (-ROLL_MAXIMUM_ANGULAR_SPEED)); //SIGN IS USED BECAUSE ROLL_MAXIMUM_ANGULAR_SPEED IS NEGATIVE
-	m_pitch_pid.set_all_params(0.1, 0.5, 0, (-PITCH_MAXIMUM_ANGULAR_SPEED)); //SIGN IS USED BECAUSE PITCH_MAXIMUM_ANGULAR_SPEED IS NEGATIVE
-	m_yaw_pid.set_all_params(0.1, 0.5, 0, (-YAW_MAXIMUM_ANGULAR_SPEED)); //SIGN IS USED BECAUSE YAW_MAXIMUM_ANGULAR_SPEED IS NEGATIVE
-	m_thrust_pid.set_all_params(0.1, 0.5, 0, 10);
+  m_roll_pid.set_all_params(0.2, 5, 0.1, (-ROLL_MAXIMUM_ANGULAR_SPEED)); //SIGN IS USED BECAUSE ROLL_MAXIMUM_ANGULAR_SPEED IS NEGATIVE, si trovano su controller.h
+	m_pitch_pid.set_all_params(0.2, 5, 0.1, (-PITCH_MAXIMUM_ANGULAR_SPEED)); //SIGN IS USED BECAUSE PITCH_MAXIMUM_ANGULAR_SPEED IS NEGATIVE, si trovano su controller.h
+	m_yaw_pid.set_all_params(0.2, 5, 0.1, (-YAW_MAXIMUM_ANGULAR_SPEED)); //SIGN IS USED BECAUSE YAW_MAXIMUM_ANGULAR_SPEED IS NEGATIVE, si trovano su controller.h
+	m_thrust_pid.set_all_params(1, 0, 0, 10);
+
+  std::cout << "SPEEDCONTROL" << std::endl;
 
   m_controller = new Controller();
   m_simulator = new server_socket();
@@ -77,9 +82,9 @@ void SpeedControl::setEnginesSpeed(float roll, float pitch, float yaw, float thr
   float engine1, engine2, engine3, engine4, max, min;
   //float pwm1, pwm2, pwm3, pwm4;
   engine1 = roll - pitch + yaw + thrust;
-  engine2 = -roll - pitch - yaw + thrust;
+  engine2 = roll + pitch - yaw + thrust;
   engine3 = -roll + pitch + yaw + thrust;
-  engine4 = roll + pitch - yaw + thrust;
+  engine4 = -roll - pitch - yaw + thrust;
   // adjusted as follow: (MAXVOLTS*engine1Speed)/100 es. thrust to max -> 9v (MAX)
   engine1 = (MAXVOLTS*engine1)/100;
   engine2 = (MAXVOLTS*engine2)/100;
@@ -115,10 +120,10 @@ void SpeedControl::setEnginesSpeed(float roll, float pitch, float yaw, float thr
   if( engine3 < min ) engine3 = min;
   if( engine4 < min ) engine4 = min;
 
-  m_simulator->set_curr_engine_speed1(engine1);
-  m_simulator->set_curr_engine_speed2(engine2);
-  m_simulator->set_curr_engine_speed3(engine3);
-  m_simulator->set_curr_engine_speed4(engine4);
+  m_simulator->set_curr_engine_speed1(6);
+  m_simulator->set_curr_engine_speed2(6);
+  m_simulator->set_curr_engine_speed3(6);
+  m_simulator->set_curr_engine_speed4(6);
   //std::cout << engine1Speed << " " << engine2Speed << engine3Speed << " " << engine4Speed << std::endl;
 }
 
@@ -130,6 +135,8 @@ void SpeedControl::off() {
 	m_thrust_pid.reset();
 }
 void SpeedControl::run() {
+  clock_t start = clock();
+
 
   //std::cout << "SONO LO SPEEDCONTROL" << std::endl;
 
@@ -182,6 +189,8 @@ void SpeedControl::run() {
   pitch_speed_joypad << m_controller->getPitchJoystick() << std::endl;
   yaw_speed_joypad << m_controller->getYawJoystick() << std::endl;
   thrust_speed_joypad << m_controller->getThrustJoystick() << std::endl;
+  clock_t end = clock();
+  cout << (end-start) << " micros Speed controller" << endl;
 
   std::cout<<"target roll:"<<m_controller->getRollJoystick()<<",sim roll: "<<m_simulator->get_curr_roll_speed()<<std::endl;
   std::cout<<"target thrust:"<<m_controller->getThrustJoystick()<<", sim speeds:"<<m_simulator->get_curr_engine_speed1()<<", "<<m_simulator->get_curr_engine_speed2()<<", "<<m_simulator->get_curr_engine_speed3()<<", "<<m_simulator->get_curr_engine_speed4()<<std::endl;

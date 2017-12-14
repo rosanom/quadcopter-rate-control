@@ -10,6 +10,9 @@
 #include <netinet/in.h>
 #include <string.h>
 #include <unistd.h>
+#include <time.h>
+
+using namespace std;
 
 union byteToFl
 {
@@ -113,7 +116,8 @@ void server_socket::off() {
 }
 
 void server_socket::run(){
-  printf("run serversocket\n");
+  //printf("run serversocket\n");
+  clock_t start = clock();
   send();
 
   float *valuesFromSim;
@@ -121,5 +125,6 @@ void server_socket::run(){
   set_roll_speed( *(valuesFromSim+4) );
   set_pitch_speed( *(valuesFromSim+5) );
   set_yaw_speed( *(valuesFromSim+6) );
-
+  clock_t end = clock();
+  cout << (end-start) << " micros server socket" << endl;
 }

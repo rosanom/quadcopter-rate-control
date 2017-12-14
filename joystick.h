@@ -5,11 +5,11 @@
 #include <fcntl.h>
 #include <pthread.h>
 #include <math.h>
-#include <linux/joystick.h> 
+#include <linux/joystick.h>
 #include <vector>
 #include <unistd.h>
 
-#define JOYSTICK_DEV "/dev/input/js2"
+#define JOYSTICK_DEV "/dev/input/js0"
 
 struct joystick_position {
 	float theta, r, x, y;

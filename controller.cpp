@@ -5,6 +5,7 @@
 #include "controller.h"
 #include "time_defines.h"
 #include <iostream>
+#include <time.h>
 
 using namespace std;
 
@@ -62,10 +63,13 @@ void Controller::off(bool stop_pwm)
 void Controller::run()
 {
     //std::cout << "SONO  IL CONTROLLER" << std::endl;
+    clock_t start = clock();
     setRollJoystick((-ROLL_MAXIMUM_ANGULAR_SPEED)*joystick->joystickPosition(1).x);
     setPitchJoystick((-PITCH_MAXIMUM_ANGULAR_SPEED)*joystick->joystickPosition(1).y);
     setYawJoystick((-YAW_MAXIMUM_ANGULAR_SPEED)*joystick->joystickPosition(0).x);
     setThrustJoystick(((joystick->joystickPosition(0).y+1)*100/(2)));
-    //std::cout << getThrustJoystick() << std::endl;
+    clock_t end = clock();
+    cout << (end-start) << " micros joystick" << endl;
+    std::cout << "Thrust: " << getThrustJoystick() << " Pitch: " << getPitchJoystick() << " Yaw: " << getYawJoystick() << " Roll: " << getRollJoystick() << std::endl;
 
 }

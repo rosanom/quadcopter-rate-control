@@ -13,7 +13,7 @@
 #include <fstream>
 
 #define MAXVOLTS 6 //Max x volts as input to the engines
-#define MINVOLTS 0
+#define MINVOLTS 3
 
 class SpeedControl : public PeriodicTask {
  public:

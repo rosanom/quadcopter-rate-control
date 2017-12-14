@@ -9,9 +9,9 @@
  #include "joystick.h"
  #include <stdbool.h>
 
- #define YAW_MAXIMUM_ANGULAR_SPEED -3.49066   //200 gradi al secondo (convertito in radianti). Trovato su internet
- #define ROLL_MAXIMUM_ANGULAR_SPEED -3.14159  //180 gradi al secondo (valore arbitrario, lo modificheremo con il professore in caso
- #define PITCH_MAXIMUM_ANGULAR_SPEED -3.14159 //180 gradi al secondo (valore arbitrario, lo modificheremo con il professore in caso
+ #define YAW_MAXIMUM_ANGULAR_SPEED -0.5   //200 gradi al secondo (convertito in radianti). Trovato su internet 
+ #define ROLL_MAXIMUM_ANGULAR_SPEED -0.5  //180 gradi al secondo (valore arbitrario, lo modificheremo con il professore in caso
+ #define PITCH_MAXIMUM_ANGULAR_SPEED -0.5 //180 gradi al secondo (valore arbitrario, lo modificheremo con il professore in caso
 
 
  class Controller : public PeriodicTask {

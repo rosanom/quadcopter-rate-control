@@ -1,7 +1,7 @@
 #ifndef __TIME_DEFINES
 #define __TIME_DEFINES
 
-#define TIME_UNIT	5 // milliseconds
+#define TIME_UNIT	1 // milliseconds
 #define REAL_TIME_UNIT	(TIME_UNIT/1000.0)
 
 // tasks at 5ms
