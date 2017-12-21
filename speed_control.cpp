@@ -24,9 +24,9 @@ SpeedControl::SpeedControl()
 
 {
                         // Kp, Ki, Kd, saturation
-  m_roll_pid.set_all_params(0.2, 5, 0.1, (-ROLL_MAXIMUM_ANGULAR_SPEED)); //SIGN IS USED BECAUSE ROLL_MAXIMUM_ANGULAR_SPEED IS NEGATIVE, si trovano su controller.h
-	m_pitch_pid.set_all_params(0.2, 5, 0.1, (-PITCH_MAXIMUM_ANGULAR_SPEED)); //SIGN IS USED BECAUSE PITCH_MAXIMUM_ANGULAR_SPEED IS NEGATIVE, si trovano su controller.h
-	m_yaw_pid.set_all_params(0.2, 5, 0.1, (-YAW_MAXIMUM_ANGULAR_SPEED)); //SIGN IS USED BECAUSE YAW_MAXIMUM_ANGULAR_SPEED IS NEGATIVE, si trovano su controller.h
+  m_roll_pid.set_all_params(0.5, 0, 0, (2)); //SIGN IS USED BECAUSE ROLL_MAXIMUM_ANGULAR_SPEED IS NEGATIVE, si trovano su controller.h
+	m_pitch_pid.set_all_params(0.5, 0, 0, (2)); //SIGN IS USED BECAUSE PITCH_MAXIMUM_ANGULAR_SPEED IS NEGATIVE, si trovano su controller.h
+	m_yaw_pid.set_all_params(0.5, 0, 0, (2)); //SIGN IS USED BECAUSE YAW_MAXIMUM_ANGULAR_SPEED IS NEGATIVE, si trovano su controller.h
 	m_thrust_pid.set_all_params(1, 0, 0, 10);
 
   std::cout << "SPEEDCONTROL" << std::endl;
@@ -86,7 +86,7 @@ void SpeedControl::setEnginesSpeed(float roll, float pitch, float yaw, float thr
   engine3 = -roll + pitch + yaw + thrust;
   engine4 = -roll - pitch - yaw + thrust;
   // adjusted as follow: (MAXVOLTS*engine1Speed)/100 es. thrust to max -> 9v (MAX)
-  engine1 = (MAXVOLTS*engine1)/100;
+  /*engine1 = (MAXVOLTS*engine1)/100;
   engine2 = (MAXVOLTS*engine2)/100;
   engine3 = (MAXVOLTS*engine3)/100;
   engine4 = (MAXVOLTS*engine4)/100;
@@ -118,12 +118,12 @@ void SpeedControl::setEnginesSpeed(float roll, float pitch, float yaw, float thr
   if( engine1 < min ) engine1 = min; // engines output can't be less then min
   if( engine2 < min ) engine2 = min;
   if( engine3 < min ) engine3 = min;
-  if( engine4 < min ) engine4 = min;
+  if( engine4 < min ) engine4 = min;*/
 
-  m_simulator->set_curr_engine_speed1(6);
-  m_simulator->set_curr_engine_speed2(6);
-  m_simulator->set_curr_engine_speed3(6);
-  m_simulator->set_curr_engine_speed4(6);
+  m_simulator->set_curr_engine_speed1(engine1);
+  m_simulator->set_curr_engine_speed2(engine2);
+  m_simulator->set_curr_engine_speed3(engine3);
+  m_simulator->set_curr_engine_speed4(engine4);
   //std::cout << engine1Speed << " " << engine2Speed << engine3Speed << " " << engine4Speed << std::endl;
 }
 
@@ -160,7 +160,7 @@ void SpeedControl::run() {
 	m_pid_roll_output = m_roll_pid.evaluate( m_target_roll-m_curr_roll_speed );
 	m_pid_pitch_output = m_pitch_pid.evaluate( m_target_pitch-m_curr_pitch_speed );
 	m_pid_yaw_output = m_yaw_pid.evaluate( m_target_yaw-m_curr_yaw_speed );
-	m_pid_thrust_output = m_thrust_pid.evaluate( m_target_thrust-m_curr_thrust );
+	m_pid_thrust_output = /*m_thrust_pid.evaluate( */m_target_thrust/*-m_curr_thrust )*/;
 
   //std::cout << "PID Roll: " << m_pid_roll_output << "\n" << std::endl;
 
@@ -170,10 +170,10 @@ void SpeedControl::run() {
   //thrust_file << "Target thrust speed: " << m_target_thrust << ", Current thrust speed: " << m_simulator->get_curr_thrust() << ", PID thrust output: "<< m_pid_thrust_output << std::endl;
 
 	//new angular speeds
-	m_simulator->set_roll_speed(m_pid_roll_output+m_curr_roll_speed); //old speed + pid adjustment value
-	m_simulator->set_pitch_speed(m_pid_pitch_output+m_curr_pitch_speed);
-	m_simulator->set_yaw_speed(m_pid_yaw_output+m_curr_yaw_speed);
-	m_simulator->set_thrust(m_pid_thrust_output+m_curr_thrust);
+	m_simulator->set_roll_speed(m_pid_roll_output/*+m_curr_roll_speed*/); //old speed + pid adjustment value
+	m_simulator->set_pitch_speed(m_pid_pitch_output/*+m_curr_pitch_speed*/);
+	m_simulator->set_yaw_speed(m_pid_yaw_output/*+m_curr_yaw_speed*/);
+	m_simulator->set_thrust(m_pid_thrust_output/*+m_curr_thrust*/);
 
   //std::cout << "Roll speed: " << m_simulator->get_curr_roll_speed() << "\n" << std::endl;
 

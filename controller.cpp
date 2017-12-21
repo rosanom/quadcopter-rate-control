@@ -67,7 +67,7 @@ void Controller::run()
     setRollJoystick((-ROLL_MAXIMUM_ANGULAR_SPEED)*joystick->joystickPosition(1).x);
     setPitchJoystick((-PITCH_MAXIMUM_ANGULAR_SPEED)*joystick->joystickPosition(1).y);
     setYawJoystick((-YAW_MAXIMUM_ANGULAR_SPEED)*joystick->joystickPosition(0).x);
-    setThrustJoystick(((joystick->joystickPosition(0).y+1)*100/(2)));
+    setThrustJoystick(3+((joystick->joystickPosition(0).y+1)*3.0/(2)));
     clock_t end = clock();
     cout << (end-start) << " micros joystick" << endl;
     std::cout << "Thrust: " << getThrustJoystick() << " Pitch: " << getPitchJoystick() << " Yaw: " << getYawJoystick() << " Roll: " << getRollJoystick() << std::endl;
