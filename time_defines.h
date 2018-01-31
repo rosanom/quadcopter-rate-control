@@ -4,7 +4,6 @@
 #define TIME_UNIT	1 // milliseconds
 #define REAL_TIME_UNIT	(TIME_UNIT/1000.0)
 
-// tasks at 5ms
 #define SPEED_PERIOD	3 // repeat each n quants of time
 #define SPEED_JITTER	2 // wait (shift of) m quants of time to start
 

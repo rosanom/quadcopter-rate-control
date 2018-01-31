@@ -10,7 +10,7 @@ class server_socket : public PeriodicTask {
 		server_socket();
 		void run();
     void off();
-		
+
 		float get_curr_roll_speed() {
 			return m_curr_roll_speed;
 		}
@@ -49,16 +49,16 @@ class server_socket : public PeriodicTask {
 		void set_thrust(float curr_thrust) {
 			m_curr_thrust=curr_thrust;
 		}
-    float set_curr_engine_speed1(float curr_engine_speed1) {
+    void set_curr_engine_speed1(float curr_engine_speed1) {
 			m_curr_engine_speed1 = curr_engine_speed1;
 		}
-    float set_curr_engine_speed2(float curr_engine_speed2) {
+    void set_curr_engine_speed2(float curr_engine_speed2) {
 			m_curr_engine_speed2 = curr_engine_speed2;
 		}
-    float set_curr_engine_speed3(float curr_engine_speed3) {
+    void set_curr_engine_speed3(float curr_engine_speed3) {
 			m_curr_engine_speed3 = curr_engine_speed3;
 		}
-    float set_curr_engine_speed4(float curr_engine_speed4) {
+    void set_curr_engine_speed4(float curr_engine_speed4) {
 			m_curr_engine_speed4 = curr_engine_speed4;
 		}
 

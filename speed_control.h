@@ -27,14 +27,12 @@ class SpeedControl : public PeriodicTask {
     roll_speed_joypad, pitch_speed_joypad, yaw_speed_joypad, thrust_speed_joypad;
 
  protected:
-    //Kinematics & m_kinematics;
-    //int m_pwm_left, m_pwm_right;
 
 	float m_target_roll, m_target_pitch, m_target_yaw, m_target_thrust,
 	m_curr_roll_speed, m_curr_pitch_speed, m_curr_yaw_speed, m_curr_thrust,
-  m_pid_roll_output,
-  m_pid_yaw_output, m_pid_pitch_output, m_pid_thrust_output;
-  Pid m_roll_pid, m_pitch_pid, m_yaw_pid, m_thrust_pid;
+  m_pid_roll_output, m_pid_yaw_output, m_pid_pitch_output, m_thrust_output;
+
+  Pid m_roll_pid, m_pitch_pid, m_yaw_pid;
 
   Controller *m_controller;
   server_socket *m_simulator;

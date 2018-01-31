@@ -55,13 +55,9 @@ server_socket::server_socket()
 
   listen(sockfd,1);
   clilen = sizeof(cli_addr);
-  // la socket dovrebbe essere non bloccante poichè dentro un ciclo, e il ciclo ci serve per eventualmente fermarsi nell'ascolto dopo un tot di tempo
-  //do {
-      clientSocket = accept(sockfd,(struct sockaddr *) &cli_addr, &clilen);
-      // se è passato un certo tot di tempo, errore e chiusura della server_socket
-      //if (newsockfd < 0)
-          //error("ERROR on accept");
-  //}while(clientSocket<0);
+  // blocking socket
+  clientSocket = accept(sockfd,(struct sockaddr *) &cli_addr, &clilen);
+
   tr=receive(); // at fitst communication we receive all 0s, we ignore them
   //send();
   printf("connessione effettuata\n");
@@ -106,7 +102,7 @@ void server_socket::send(){
 
   printf("dati inviati\n");
 
-  write(clientSocket, engineOutput, 16);
+  write(clientSocket, engineOutput, 16); // 16 bytes
 
 }
 
@@ -125,6 +121,7 @@ void server_socket::run(){
   set_roll_speed( *(valuesFromSim+4) );
   set_pitch_speed( *(valuesFromSim+5) );
   set_yaw_speed( *(valuesFromSim+6) );
+  set_thrust(*(valuesFromSim+3) ); //added
   clock_t end = clock();
-  cout << (end-start) << " micros server socket" << endl;
+  // cout << (end-start) << " micros server socket" << endl;
 }
