@@ -10,9 +10,9 @@ To start the simulation:
 
 - test it with the jstest-gtk utility for linux
 
-- extract the simulator file (.tar.gz file)
 
 - if not done yet, download the v-rep simulator
+- extract the simulator file (.tar.gz file)
 - execute the v-rep simulator into the extracted folder ( ./vrep.sh )
 
 - eventually, import the scene file with the drone model file
